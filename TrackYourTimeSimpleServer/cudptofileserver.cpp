@@ -13,7 +13,7 @@ void cUDPtoFileServer::processState(QString host, QString UserName, QString AppN
     userInfo.AppName = AppName;
     userInfo.AppState = AppState;
     userInfo.IdleCounter = idleCounter;
-    userInfo.LastPackageTime = QDateTime::currentSecsSinceEpoch();
+    userInfo.LastPackageTime = QDateTime::currentMSecsSinceEpoch()/1000;
 
     bool newUser = true;
     if (m_States.contains(host)){
@@ -134,7 +134,7 @@ void cUDPtoFileServer::onTimerState()
     QFile f(m_StateFileName);
     if (f.open(QIODevice::WriteOnly)){
         QTextStream s(&f);
-        s << QString::number(QDateTime::currentSecsSinceEpoch()) << '\n';
+        s << QString::number(QDateTime::currentMSecsSinceEpoch()/1000) << '\n';
         s << QString::number(m_States.size()) << '\n';
         QMap<QString, sUserInfo>::const_iterator i = m_States.constBegin();
         while (i != m_States.constEnd()) {
